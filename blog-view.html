@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>旋律 - 个人博客</title>
+    <title>博客详情 - 旋律的个人博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 复用主页面样式 -->
     <style>
         :root {
             --primary: #4FC08D; /* Vue.js 绿色 */
@@ -435,6 +436,104 @@
         }
 
 
+        /* 新增样式确保Markdown渲染效果 */
+        .blog-post-content {
+            line-height: 1.7;
+        }
+        
+        .blog-post-content p {
+            margin-bottom: 1.2rem;
+            white-space: pre-line;
+        }
+        
+        .blog-post-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .blog-post-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .blog-post-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .blog-post-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #aaa;
+            font-style: italic;
+        }
+        
+    .blog-post-content {
+        line-height: 1.7;
+    }
+    
+    .blog-post-content p {
+        margin-bottom: 1.2rem;
+        white-space: pre-line;
+    }
+    
+    .blog-post-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        display: block;
+    }
+    
+    .blog-post-content ul, 
+    .blog-post-content ol {
+        margin-left: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .blog-post-content li {
+        margin-bottom: 0.5rem;
+        position: relative;
+        left: 0;
+    }
+    
+        .blog-post-content ul ul,
+        .blog-post-content ol ol,
+        .blog-post-content ul ol,
+        .blog-post-content ol ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .blog-post-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .blog-post-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .blog-post-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: #aaa;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -445,280 +544,101 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#" class="active">首页</a></li>
-                <li><a href="#about">关于我</a></li>
-                <li><a href="#skills">技术栈</a></li>
-                <li><a href="#projects">项目</a></li>
-                <li><a href="#blog">博客</a></li>
-                <li><a href="#contact">联系</a></li>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="index.html#about">关于我</a></li>
+                <li><a href="index.html#blog">博客</a></li>
             </ul>
         </nav>
     </header>
     
     <div class="container">
-        <section class="hero">
-            <h2>你好，我是旋律</h2>
-            <p>专注于Go语言开发的后端程序员，对大型语言模型充满热情</p>
-            <div class="tagline">
-                "创造的不是工具，而是能与我们共同成长的数字伙伴"
-            </div>
-        </section>
-        
-        <section id="about">
-            <h2 class="section-title">关于我</h2>
+        <section id="blog-post">
+        <a href="#" id="back-btn" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 返回博客列表
+        </a>
             <div class="card">
-                <p>我是一名专注于Go语言开发的程序员，对大型语言模型(LLM)充满热情。目前致力于构建能够长期陪伴成长的数字生命。</p>
-                <p>🎂 生日: 2002年2月</p>
-                <p>📍 现在我在: 湖北省武汉市</p>
-                <p>💻 工作经历: 目前在小米-武汉担任后端开发工程师,专注于效能工具开发</p>
-                <p>🌱 兴趣领域:</p>
-                <ul style="margin-left: 5%;">
-                    <li>大型语言模型应用</li>
-                    <li>人机交互创新</li>
-                    <li>Golang后端开发</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section id="skills">
-            <h2 class="section-title">技术栈</h2>
-            <div class="card">
-                <h3>编程语言</h3>
-                <div class="badges">
-                    <div class="badge go">
-                        <i class="fab fa-golang"></i> Go
-                    </div>
-                    <div class="badge python">
-                        <i class="fab fa-python"></i> Python
-                    </div>
-                </div>
-                
-                <h3>AI/ML</h3>
-                <div class="badges">
-                    <div class="badge llm">
-                        <i class="fas fa-brain"></i> LLMs
-                    </div>
-                </div>
-                
-                <h3>前端框架</h3>
-                <div class="badges">
-                    <div class="badge vue">
-                        <i class="fab fa-vuejs"></i> Vue.js
-                    </div>
-                </div>
-                
-                <h3>工具与框架</h3>
-                <div class="badges">
-                    <div class="badge docker">
-                        <i class="fab fa-docker"></i> Docker
-                    </div>
-                    <div class="badge git">
-                        <i class="fab fa-git-alt"></i> Git
-                    </div>
-                    <div class="badge kubernetes">
-                        <i class="fas fa-dharmachakra"></i> Kubernetes
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="projects">
-            <h2 class="section-title">当前项目</h2>
-            <div class="card">
-                <h3>数字生命体计划</h3>
-                <p>构建具有长期记忆和情感交互能力的AI伴侣，实现：</p>
-                
-                <div class="project-card">
-                    <h3>持久的记忆存储与回忆 MiniMem0</h3>
-                    <p>一个大模型记忆系统</p>
-                    <a href="https://github.com/xuanlv2002/miniMem0" target="_blank">
-                        查看项目 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                
-                <div class="project-card">
-                    <h3>桌面陪伴型终端 HoneyV2</h3>
-                    <p>一个支持MCP/A2A的桌面常驻AI应用</p>
-                    <a href="#" target="_blank">
-                        了解更多 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                
-                <p>希望打造一个可以随着时间不断成长,越来越好用的AI生命体</p>
-            </div>
-        </section>
-        
-        <section id="blog">
-            <h2 class="section-title">技术博客</h2>
-            <div class="card">
-                <p>在这里分享我的技术见解、项目进展和学习心得</p>
-                
-                <div class="blog-container" id="blog-container">
+                <div id="blog-content" class="blog-post">
                     <div class="loading">
                         <div class="spinner"></div>
-                        <p>正在加载博客...</p>
+                        <p>正在加载博客内容...</p>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <section class="activity-graph">
-            <h2 class="section-title">开发活跃度</h2>
-            <img src="https://github-readme-activity-graph.vercel.app/graph?username=xuanlv2002&theme=react-dark" 
-                 alt="GitHub Activity Graph">
-        </section>
-        
-        <section id="contact">
-            <h2 class="section-title">联系我</h2>
-            <div class="contact-links">
-                <a href="mailto:2314709037@qq.com" class="contact-btn email">
-                    <i class="fas fa-envelope"></i> 邮箱联系
-                </a>
-                <a href="https://github.com/xuanlv2002" target="_blank" class="contact-btn github">
-                    <i class="fab fa-github"></i> GitHub关注
-                </a>
             </div>
         </section>
     </div>
     
     <footer>
-        <p>© 2025 旋律的个人博客 | 最后更新: 2025年7月27日</p>
-        <p>欢迎交流合作，一起探索AI生命的可能性 ✨</p>
+        <p>© 2025 旋律的个人博客</p>
     </footer>
 
-    <script>
-        // 更新后的博客加载功能
+       <script>
+        document.getElementById('back-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.close(); // 关闭当前窗口
+            // 或者使用 window.history.back() 如果是从主页打开的
+        });
+
+
+        // 配置marked.js
+        marked.setOptions({
+            breaks: true, // 将换行符转换为<br>
+            gfm: true,    // 使用GitHub风格的Markdown
+        });
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // 配置marked.js
-            marked.setOptions({
-                breaks: true, // 将换行符转换为<br>
-                gfm: true,    // 使用GitHub风格的Markdown
-            });
+            const urlParams = new URLSearchParams(window.location.search);
+            const file = urlParams.get('file');
+            const blogContent = document.getElementById('blog-content');
             
-            const blogContainer = document.getElementById('blog-container');
+            if (!file) {
+                blogContent.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>未指定博客文件</p>
+                        <p>请从博客列表中选择一篇文章</p>
+                    </div>
+                `;
+                return;
+            }
             
-            // 模拟博客文件列表
-            const blogFiles = [
-                'blog/llmMemorySystem.md'
-            ];
+            // 设置页面标题
+            document.title = file.split('/').pop().replace('.md', '') + ' - 旋律的个人博客';
             
-            // 尝试加载博客文件
-            loadBlogPosts(blogFiles);
-            
-            async function loadBlogPosts(files) {
-                blogContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>正在加载博客...</p></div>';
-                
-                try {
-                    const posts = await Promise.all(files.map(async file => {
-                        const response = await fetch(file);
-                        if (!response.ok) throw new Error('博客加载失败');
-                        const markdown = await response.text();
-                        return {
-                            filename: file,
-                            content: markdown,
-                            // 解析Markdown获取纯文本摘要
-                            excerpt: getExcerpt(markdown)
-                        };
-                    }));
+            fetch(file)
+                .then(response => {
+                    if (!response.ok) throw new Error('博客加载失败');
+                    return response.text();
+                })
+                // 在blog-view.html的fetch和marked.parse之后添加图片路径处理
+                .then(markdown => {
+                    // 解析Markdown
+                    let htmlContent = marked.parse(markdown);
                     
-                    renderBlogPosts(posts);
-                } catch (error) {
+                    // 修复图片路径 - 确保路径相对于网站根目录
+                    htmlContent = htmlContent.replace(/<img src="([^"]+)"/g, (match, src) => {
+                        // 如果图片路径不是绝对路径，则添加blog/前缀
+                        if (!src.startsWith('http') && !src.startsWith('/')) {
+                            return `<img src="blog/${src}"`;
+                        }
+                        return match;
+                    });
+                    
+                    blogContent.innerHTML = `
+                        <div class="blog-post-content">
+                            ${htmlContent}
+                        </div>
+                    `;
+                })
+                .catch(error => {
                     console.error('加载博客失败:', error);
-                    blogContainer.innerHTML = `
+                    blogContent.innerHTML = `
                         <div class="error">
                             <i class="fas fa-exclamation-triangle"></i>
                             <p>无法加载博客内容: ${error.message}</p>
-                            <p>请检查您的网络连接或稍后再试</p>
+                            <p>请检查URL是否正确或稍后再试</p>
                         </div>
                     `;
-                }
-            }
-            
-            // 获取纯文本摘要
-            function getExcerpt(markdown) {
-                // 先解析为HTML
-                const html = marked.parse(markdown);
-                // 创建临时元素获取纯文本
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                let text = temp.textContent || temp.innerText || '';
-                // 移除多余空格和换行
-                text = text.replace(/\s+/g, ' ').trim();
-                // 截取前200个字符
-                return text.substring(0, 200) + (text.length > 200 ? '...' : '');
-            }
-            
-            function renderBlogPosts(posts) {
-                blogContainer.innerHTML = '';
-                
-                posts.forEach(post => {
-                    const filename = post.filename.split('/').pop();
-                    const title = filename.replace('.md', '')
-                                          .replace(/-/g, ' ')
-                                          .replace(/\b\w/g, l => l.toUpperCase());
-                    
-                    const today = new Date();
-                    const dateStr = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-                    
-                    const blogCard = document.createElement('div');
-                    blogCard.className = 'blog-card';
-                    
-                    blogCard.innerHTML = `
-                        <div class="blog-header">
-                            <h3 class="blog-title">${title}</h3>
-                            <div class="blog-meta">
-                                <span><i class="far fa-calendar"></i> ${dateStr}</span>
-                                <span><i class="far fa-clock"></i> ${estimateReadingTime(post.content)}分钟阅读</span>
-                            </div>
-                        </div>
-                        <div class="blog-content">
-                            <p class="blog-excerpt">${post.excerpt}</p>
-                            <a href="blog-view.html?file=${encodeURIComponent(post.filename)}" target="_blank">阅读全文 <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    `;
-                    
-                    blogContainer.appendChild(blogCard);
                 });
-            }
-            
-            // 估算阅读时间
-            function estimateReadingTime(content) {
-                const wordsPerMinute = 100;
-                const wordCount = content.split(/\s+/).length;
-                return Math.ceil(wordCount / wordsPerMinute);
-            }
-        });
-
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // 导航高亮
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav a');
-            
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
         });
     </script>
 </body>
