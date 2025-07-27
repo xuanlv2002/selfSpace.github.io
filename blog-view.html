@@ -553,7 +553,7 @@
     
     <div class="container">
         <section id="blog-post">
-        <a href="#" id="back-btn" class="back-btn">
+        <a href="index.html#blog" id="back-btn" class="back-btn">
             <i class="fas fa-arrow-left"></i> 返回博客列表
         </a>
             <div class="card">
@@ -574,7 +574,8 @@
        <script>
         document.getElementById('back-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            window.close(); // 关闭当前窗口
+            // window.close(); // 关闭当前窗口
+            window.history.back()
             // 或者使用 window.history.back() 如果是从主页打开的
         });
 

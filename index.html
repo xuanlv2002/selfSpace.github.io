@@ -434,6 +434,15 @@
             line-height: 1.7;
         }
 
+        /* 新增的导航栏修复样式 */
+        #head {
+            scroll-margin-top: 100px; /* 确保导航栏不会遮挡内容 */
+        }
+
+            /* 修复导航栏高亮问题 */
+        #contact {
+            padding-bottom: 3rem;
+        }
 
     </style>
 </head>
@@ -445,7 +454,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#head" class="active">首页</a></li>
                 <li><a href="#about">关于我</a></li>
                 <li><a href="#skills">技术栈</a></li>
                 <li><a href="#projects">项目</a></li>
@@ -456,7 +465,8 @@
     </header>
     
     <div class="container">
-        <section class="hero">
+        <!-- 为hero部分添加id="head" -->
+        <section id="head" class="hero">
             <h2>你好，我是旋律</h2>
             <p>专注于Go语言开发的后端程序员，对大型语言模型充满热情</p>
             <div class="tagline">
@@ -597,9 +607,10 @@
             
             const blogContainer = document.getElementById('blog-container');
             
-            // 模拟博客文件列表
+            // 博客文件列表
             const blogFiles = [
-                'blog/llmMemorySystem.md'
+                'blog/llmMemorySystem.md',
+                'blog/llmMemorySystem2.md'
             ];
             
             // 尝试加载博客文件
@@ -673,7 +684,7 @@
                         </div>
                         <div class="blog-content">
                             <p class="blog-excerpt">${post.excerpt}</p>
-                            <a href="blog-view.html?file=${encodeURIComponent(post.filename)}" target="_blank">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-view.html?file=${encodeURIComponent(post.filename)}">阅读全文 <i class="fas fa-arrow-right"></i></a>
                         </div>
                     `;
                     
@@ -690,36 +701,69 @@
         });
 
         // 平滑滚动
+ 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    // 添加标题可见性偏移
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight + 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 更新导航栏激活状态
+                    updateActiveNav(this);
+                }
             });
         });
 
-        // 导航高亮
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav a');
+    // 修复导航栏高亮问题
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a');
+        const headerHeight = document.querySelector('header').offsetHeight;
+        
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionBottom = sectionTop + sectionHeight;
             
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
+            // 添加标题可见性偏移
+            if (window.scrollY + headerHeight + 20 >= sectionTop && 
+                window.scrollY + headerHeight + 20 < sectionBottom) {
+                current = section.getAttribute('id');
+            }
         });
+        
+        // 顶部区域特殊处理
+        if (window.scrollY < 100) {
+            current = 'head';
+        }
+        
+        // 底部区域特殊处理
+        const documentHeight = document.documentElement.scrollHeight;
+        const viewportHeight = window.innerHeight;
+        if (window.scrollY + viewportHeight >= documentHeight - 100) {
+            current = 'contact';
+        }
+        
+        navLinks.forEach(link => {
+            const linkHref = link.getAttribute('href').substring(1);
+            link.classList.remove('active');
+            if (linkHref === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+    
+
     </script>
 </body>
 </html>
