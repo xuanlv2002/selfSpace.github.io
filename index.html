@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋律 - 个人博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --primary: #4FC08D; /* Vue.js 绿色 */
+            --secondary: #00ADD8; /* Go 蓝色 */
+            --accent: #FF6F00; /* LLM 橙色 */
+            --dark: #1a1a2e;
+            --darker: #0d0d1a;
+            --light: #e6e6ff;
+            --gray: #4a4a68;
+            --card-bg: rgba(26, 26, 46, 0.8);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+        
+        nav a:hover, nav a.active {
+            background: var(--primary);
+            color: var(--darker);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 5rem 1rem;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(79, 192, 141, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #ccc;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin: 3rem 0 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+        
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .badge.go { background: #00ADD8; }
+        .badge.python { background: #3776AB; }
+        .badge.llm { background: #FF6F00; }
+        .badge.vue { background: #4FC08D; }
+        .badge.docker { background: #2496ED; }
+        .badge.git { background: #F05032; }
+        .badge.kubernetes { background: #326CE5; }
+        
+        .project-card {
+            background: rgba(15, 15, 35, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .project-card a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: 0.8rem;
+        }
+        
+        .project-card a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .blog-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .blog-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 35, 0.8));
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .blog-header {
+            padding: 1.5rem;
+            background: rgba(79, 192, 141, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .blog-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .blog-meta {
+            display: flex;
+            color: #aaa;
+            font-size: 0.9rem;
+            gap: 1rem;
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-content p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-btn:hover {
+            background: rgba(79, 192, 141, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .contact-btn.email { color: #D14836; }
+        .contact-btn.github { color: #fff; }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .activity-graph {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .activity-graph img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <h1>旋律</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#about">关于我</a></li>
+                <li><a href="#skills">技术栈</a></li>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#blog">博客</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <section class="hero">
+            <h2>你好，我是旋律</h2>
+            <p>专注于Go语言开发的后端程序员，对大型语言模型充满热情</p>
+            <div class="tagline">
+                "创造的不是工具，而是能与我们共同成长的数字伙伴"
+            </div>
+        </section>
+        
+        <section id="about">
+            <h2 class="section-title">关于我</h2>
+            <div class="card">
+                <p>我是一名专注于Go语言开发的程序员，对大型语言模型(LLM)充满热情。目前致力于构建能够长期陪伴成长的数字生命。</p>
+                <p>🎂 生日: 2002年2月</p>
+                <p>📍 现在我在: 湖北省武汉市</p>
+                <p>🌱 兴趣领域:</p>
+                <ul style="margin-left: 5%;">
+                    <li>大型语言模型应用</li>
+                    <li>人机交互创新</li>
+                    <li>Golang后端开发</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="skills">
+            <h2 class="section-title">技术栈</h2>
+            <div class="card">
+                <h3>编程语言</h3>
+                <div class="badges">
+                    <div class="badge go">
+                        <i class="fab fa-golang"></i> Go
+                    </div>
+                    <div class="badge python">
+                        <i class="fab fa-python"></i> Python
+                    </div>
+                </div>
+                
+                <h3>AI/ML</h3>
+                <div class="badges">
+                    <div class="badge llm">
+                        <i class="fas fa-brain"></i> LLMs
+                    </div>
+                </div>
+                
+                <h3>前端框架</h3>
+                <div class="badges">
+                    <div class="badge vue">
+                        <i class="fab fa-vuejs"></i> Vue.js
+                    </div>
+                </div>
+                
+                <h3>工具与框架</h3>
+                <div class="badges">
+                    <div class="badge docker">
+                        <i class="fab fa-docker"></i> Docker
+                    </div>
+                    <div class="badge git">
+                        <i class="fab fa-git-alt"></i> Git
+                    </div>
+                    <div class="badge kubernetes">
+                        <i class="fas fa-dharmachakra"></i> Kubernetes
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects">
+            <h2 class="section-title">当前项目</h2>
+            <div class="card">
+                <h3>数字生命体计划</h3>
+                <p>构建具有长期记忆和情感交互能力的AI伴侣，实现：</p>
+                
+                <div class="project-card">
+                    <h3>持久的记忆存储与回忆 MiniMem0</h3>
+                    <p>一个大模型记忆系统</p>
+                    <a href="https://github.com/xuanlv2002/miniMem0" target="_blank">
+                        查看项目 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="project-card">
+                    <h3>桌面陪伴型终端 HoneyV2</h3>
+                    <p>一个支持MCP/A2A的桌面常驻AI应用</p>
+                    <a href="#" target="_blank">
+                        了解更多 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <p>希望打造一个可以随着时间不断成长,越来越好用的AI生命体</p>
+            </div>
+        </section>
+        
+        <section id="blog">
+            <h2 class="section-title">技术博客</h2>
+            <div class="card">
+                <p>在这里分享我的技术见解、项目进展和学习心得</p>
+                
+                <div class="blog-container">
+                    <div class="blog-card">
+                        <div class="blog-header">
+                            <h3 class="blog-title">构建LLM记忆系统的挑战</h3>
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> 2025-07-27</span>
+                                <span><i class="far fa-clock"></i> 8分钟阅读</span>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <p>在开发MiniMem0的过程中，我遇到了几个关键挑战：如何高效存储和检索海量记忆数据，如何保持上下文连贯性，以及如何平衡响应时间和准确性...</p>
+                            <a href="#">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="blog-card">
+                        <div class="blog-header">
+                            <h3 class="blog-title">Go语言后端的基础设计方法</h3>
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> 2025-07-15</span>
+                                <span><i class="far fa-clock"></i> 12分钟阅读</span>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <p>Go语言以其出色的并发处理能力和简洁的语法成为后端开发的首选。本文将介绍一种脚手架来快速搭建go的web后端服务</p>
+                            <a href="#">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="blog-card">
+                        <div class="blog-header">
+                            <h3 class="blog-title">数字生命体的情感交互设计</h3>
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> 2025-07-27</span>
+                                <span><i class="far fa-clock"></i> 10分钟阅读</span>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <p>如何让AI伴侣具备情感交互能力？如何创建一个真正的AI生命体？基础的功能每个产品都大同小异,但如何可以让AI更有温度？</p>
+                            <a href="#">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="contact-btn" style="background: var(--primary); color: var(--darker);">
+                        <i class="fas fa-plus"></i> 上传新博客
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="activity-graph">
+            <h2 class="section-title">开发活跃度</h2>
+            <img src="https://github-readme-activity-graph.vercel.app/graph?username=xuanlv2002&theme=react-dark" 
+                 alt="GitHub Activity Graph">
+        </section>
+        
+        <section id="contact">
+            <h2 class="section-title">联系我</h2>
+            <div class="contact-links">
+                <a href="mailto:2314709037@qq.com" class="contact-btn email">
+                    <i class="fas fa-envelope"></i> 邮箱联系
+                </a>
+                <a href="https://github.com/xuanlv2002" target="_blank" class="contact-btn github">
+                    <i class="fab fa-github"></i> GitHub关注
+                </a>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2025 旋律的个人博客 | 最后更新: 2025年7月27日</p>
+        <p>欢迎交流合作，一起探索AI生命的可能性 ✨</p>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // 导航高亮
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
